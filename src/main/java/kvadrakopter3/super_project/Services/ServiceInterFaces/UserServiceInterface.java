@@ -1,8 +1,9 @@
 package kvadrakopter3.super_project.Services.ServiceInterFaces;
 
-import egor.mega.project.kvadrakopter.Entityes.UserEntity;
-import egor.mega.project.kvadrakopter.Exceptions.UserAllReadyExistsException;
-import egor.mega.project.kvadrakopter.Exceptions.UserNotFoundException;
+
+import kvadrakopter3.super_project.Entityes.UserEntity;
+import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
+import kvadrakopter3.super_project.Exceptions.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 
 public interface UserServiceInterface {

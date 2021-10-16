@@ -1,10 +1,11 @@
 package kvadrakopter3.super_project.Controllers;
 
-import egor.mega.project.kvadrakopter.Controllers.ControllerInterfaces.RegistrationControllerInterface;
-import egor.mega.project.kvadrakopter.Entityes.UserEntity;
-import egor.mega.project.kvadrakopter.Exceptions.UserAllReadyExistsException;
-import egor.mega.project.kvadrakopter.KvadrakopterApplication;
-import egor.mega.project.kvadrakopter.Services.UserService;
+
+import kvadrakopter3.super_project.Controllers.ControllerInterfaces.RegistrationControllerInterface;
+import kvadrakopter3.super_project.Entityes.UserEntity;
+import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
+import kvadrakopter3.super_project.Services.UserService;
+import kvadrakopter3.super_project.SuperProjectApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class RegistrationControllerImpl implements RegistrationControllerInterface {
     private final UserService userService;
-    private final Logger logger = LoggerFactory.getLogger(KvadrakopterApplication.class);
+    private final Logger logger = LoggerFactory.getLogger(SuperProjectApplication.class);
 
     @Autowired
     public RegistrationControllerImpl(UserService userService) {

@@ -1,7 +1,7 @@
 package kvadrakopter3.super_project.WebSecurutyConfig;
 
-import egor.mega.project.kvadrakopter.Filters.csrfFilter;
-import egor.mega.project.kvadrakopter.Services.UserService;
+
+import kvadrakopter3.super_project.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;

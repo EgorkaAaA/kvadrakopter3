@@ -1,11 +1,12 @@
 package kvadrakopter3.super_project.Services;
 
-import egor.mega.project.kvadrakopter.Entityes.RolesEntity;
-import egor.mega.project.kvadrakopter.Entityes.UserEntity;
-import egor.mega.project.kvadrakopter.Exceptions.UserAllReadyExistsException;
-import egor.mega.project.kvadrakopter.Exceptions.UserNotFoundException;
-import egor.mega.project.kvadrakopter.Repositories.UserRepo;
-import egor.mega.project.kvadrakopter.Services.ServiceInterFaces.UserServiceInterface;
+
+import kvadrakopter3.super_project.Entityes.RolesEntity;
+import kvadrakopter3.super_project.Entityes.UserEntity;
+import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
+import kvadrakopter3.super_project.Exceptions.UserNotFoundException;
+import kvadrakopter3.super_project.Repositories.UserRepo;
+import kvadrakopter3.super_project.Services.ServiceInterFaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package kvadrakopter3.super_project.Controllers.ControllerInterfaces;
 
-import egor.mega.project.kvadrakopter.Entityes.UserEntity;
+import kvadrakopter3.super_project.Entityes.UserEntity;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
 
