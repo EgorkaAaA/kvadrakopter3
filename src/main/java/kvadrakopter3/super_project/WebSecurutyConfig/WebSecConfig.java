@@ -1,6 +1,7 @@
 package kvadrakopter3.super_project.WebSecurutyConfig;
 
 
+import kvadrakopter3.super_project.Filters.csrfFilter;
 import kvadrakopter3.super_project.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,16 +25,14 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-//                .authorizeRequests()
-//                .antMatchers("/**/post/**").authenticated()
-//                .and()
-                .csrf().disable()
-//                .addFilterAfter(new csrfFilter(),
-//                        CsrfFilter.class)
-                .authenticationProvider(authenticationProvider())
-                .httpBasic()
+                .authorizeRequests()
+                .antMatchers("/**/post/**").authenticated()
+                .antMatchers("/**/admin/**").hasRole("ADMIN")
                 .and()
-                .formLogin();
+                .addFilterAfter(new csrfFilter(),
+                        CsrfFilter.class)
+                .authenticationProvider(authenticationProvider())
+                .httpBasic();
     }
 
     @Bean

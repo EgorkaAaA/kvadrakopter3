@@ -1,6 +1,8 @@
 package kvadrakopter3.super_project.Services.ServiceInterFaces;
 
 
+import com.vk.api.sdk.exceptions.ApiException;
+import com.vk.api.sdk.exceptions.ClientException;
 import kvadrakopter3.super_project.Entityes.UserEntity;
 import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
 import kvadrakopter3.super_project.Exceptions.UserNotFoundException;
@@ -11,5 +13,5 @@ public interface UserServiceInterface {
 
     UserEntity findUserByUserName(String userName) throws UserNotFoundException;
 
-    UserEntity createUserFromVkAuth(String userName);
+    UserEntity createUserFromVkAuth(String userName) throws ClientException, ApiException;
 }

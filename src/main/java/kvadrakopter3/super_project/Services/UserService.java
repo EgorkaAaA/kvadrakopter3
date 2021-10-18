@@ -1,6 +1,13 @@
 package kvadrakopter3.super_project.Services;
 
 
+import com.vk.api.sdk.client.TransportClient;
+import com.vk.api.sdk.client.VkApiClient;
+import com.vk.api.sdk.client.actors.UserActor;
+import com.vk.api.sdk.exceptions.ApiException;
+import com.vk.api.sdk.exceptions.ClientException;
+import com.vk.api.sdk.httpclient.HttpTransportClient;
+import com.vk.api.sdk.objects.UserAuthResponse;
 import kvadrakopter3.super_project.Entityes.RolesEntity;
 import kvadrakopter3.super_project.Entityes.UserEntity;
 import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
@@ -28,8 +35,9 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService, UserServiceInterface {
     private final UserRepo userRepo;
-    //private final TransportClient transportClient = HttpTransportClient.getInstance();
-    //private final VkApiClient vk = new VkApiClient(transportClient);
+    private final TransportClient transportClient = HttpTransportClient.getInstance();
+    private final VkApiClient vk = new VkApiClient(transportClient);
+    private final String CLIENT_SECRET = "fA2bwDddC161AtKpXxYb";
 
     @Autowired
     public UserService(UserRepo userRepo) {
@@ -68,12 +76,15 @@ public class UserService implements UserDetailsService, UserServiceInterface {
     }
 
     @Override
-    public UserEntity createUserFromVkAuth(String userName) {
-//        UserAuthResponse authResponse = vk.oAuth()
-//                .userAuthorizationCodeFlow(7957025, CLIENT_SECRET, , code)
-//                .execute();
+    public UserEntity createUserFromVkAuth(String userName) throws ClientException, ApiException {
+        UserAuthResponse authResponse = vk.oAuth()
+                .userAuthorizationCodeFlow(7957025,
+                        CLIENT_SECRET,
+                        "https://kvadrakopter3.herokuapp.com/api/auth/registration/vk-auth" ,
+                        "code")
+                .execute();
 
-        //UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
+        UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
         
         return null;
     }
