@@ -76,16 +76,15 @@ public class UserService implements UserDetailsService, UserServiceInterface {
     }
 
     @Override
-    public UserEntity createUserFromVkAuth(String userName) throws ClientException, ApiException {
+    public UserEntity createUserFromVkAuth(String code) throws ClientException, ApiException {
         UserAuthResponse authResponse = vk.oAuth()
                 .userAuthorizationCodeFlow(7957025,
                         CLIENT_SECRET,
                         "https://kvadrakopter3.herokuapp.com/api/auth/registration/vk-auth" ,
-                        "code")
+                        code)
                 .execute();
 
         UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
-        
         return null;
     }
 

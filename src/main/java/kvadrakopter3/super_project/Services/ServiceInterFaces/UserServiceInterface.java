@@ -13,5 +13,5 @@ public interface UserServiceInterface {
 
     UserEntity findUserByUserName(String userName) throws UserNotFoundException;
 
-    UserEntity createUserFromVkAuth(String userName) throws ClientException, ApiException;
+    UserEntity createUserFromVkAuth(String code) throws ClientException, ApiException;
 }

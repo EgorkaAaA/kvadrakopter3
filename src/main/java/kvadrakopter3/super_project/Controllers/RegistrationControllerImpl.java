@@ -1,7 +1,8 @@
 package kvadrakopter3.super_project.Controllers;
 
 
-import com.google.gson.JsonObject;
+import com.vk.api.sdk.exceptions.ApiException;
+import com.vk.api.sdk.exceptions.ClientException;
 import kvadrakopter3.super_project.Controllers.ControllerInterfaces.RegistrationControllerInterface;
 import kvadrakopter3.super_project.Entityes.UserEntity;
 import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
@@ -42,7 +43,17 @@ public class RegistrationControllerImpl implements RegistrationControllerInterfa
 
     @Override
     @PostMapping("/registration/vk-auth")
-    public ResponseEntity<JsonObject> vkAuthEndPoint(JsonObject object) {
-        return new ResponseEntity<>(object, HttpStatus.OK);
+    public ResponseEntity<UserEntity> vkAuthEndPoint(String code) {
+        UserEntity userFromVkAuth = null;
+        try {
+            userFromVkAuth = userService.createUserFromVkAuth(code);
+            logger.info("User from vk created");
+        } catch (ClientException | ApiException e) {
+            logger.error(e.getMessage());
+        }
+        if(userFromVkAuth != null)
+            return new ResponseEntity<>(userFromVkAuth, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
