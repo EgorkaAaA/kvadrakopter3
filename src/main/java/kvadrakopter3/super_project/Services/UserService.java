@@ -89,8 +89,8 @@ public class UserService implements UserDetailsService, UserServiceInterface {
 
         UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
 
-        UsersGetQuery fields = vk.users().get(actor).fields(Fields.FIRST_NAME_ABL, Fields.LAST_NAME_ABL);1
-        return null;
+        UsersGetQuery fields = vk.users().get(actor).fields(Fields.FIRST_NAME_ABL, Fields.LAST_NAME_ABL);
+        return new UserEntity();
     }
 
     //Help methods
