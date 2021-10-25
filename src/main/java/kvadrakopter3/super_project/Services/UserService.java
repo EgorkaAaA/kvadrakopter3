@@ -1,7 +1,11 @@
 package kvadrakopter3.super_project.Services;
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.vk.api.sdk.client.ClientResponse;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
@@ -11,6 +15,7 @@ import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.users.Fields;
 import com.vk.api.sdk.queries.users.UsersGetQuery;
+import jdk.nashorn.internal.parser.JSONParser;
 import kvadrakopter3.super_project.Entityes.RolesEntity;
 import kvadrakopter3.super_project.Entityes.UserEntity;
 import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
@@ -90,8 +95,12 @@ public class UserService implements UserDetailsService, UserServiceInterface {
 
         UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
 
-        UsersGetQuery a = vk.users().get(actor).fields(Fields.FIRST_NAME_ABL, Fields.LAST_NAME_ABL);
-        return new UserEntity(0,a.executeAsString(),null,null);
+        String a =  vk.users().get(actor).fields(Fields.FIRST_NAME_ABL, Fields.LAST_NAME_ABL).executeAsString();
+        JsonParser parser = new JsonParser();
+        JsonObject obj = (JsonObject) parser.parse(a);
+        JsonElement first_name = obj.get("first_name");
+
+        return new UserEntity(0,first_name.toString(),null,null);
     }
 
     //Help methods
