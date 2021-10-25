@@ -8,6 +8,8 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
+import com.vk.api.sdk.objects.users.Fields;
+import com.vk.api.sdk.queries.users.UsersGetQuery;
 import kvadrakopter3.super_project.Entityes.RolesEntity;
 import kvadrakopter3.super_project.Entityes.UserEntity;
 import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 
@@ -85,6 +88,8 @@ public class UserService implements UserDetailsService, UserServiceInterface {
                 .execute();
 
         UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
+
+        UsersGetQuery fields = vk.users().get(actor).fields(Fields.FIRST_NAME_ABL, Fields.LAST_NAME_ABL);1
         return null;
     }
 

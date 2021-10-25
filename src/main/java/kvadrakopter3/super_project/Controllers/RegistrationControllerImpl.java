@@ -13,10 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -42,7 +39,7 @@ public class RegistrationControllerImpl implements RegistrationControllerInterfa
     }
 
     @Override
-    @PostMapping("/registration/vk-auth")
+    @GetMapping("/registration/vk-auth")
     public ResponseEntity<UserEntity> vkAuthEndPoint(String code) {
         UserEntity userFromVkAuth = null;
         try {
