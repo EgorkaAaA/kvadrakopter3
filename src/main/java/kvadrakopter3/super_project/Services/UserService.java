@@ -1,6 +1,7 @@
 package kvadrakopter3.super_project.Services;
 
 
+import com.google.gson.JsonObject;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
@@ -89,8 +90,8 @@ public class UserService implements UserDetailsService, UserServiceInterface {
 
         UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
 
-        UsersGetQuery fields = vk.users().get(actor).fields(Fields.FIRST_NAME_ABL, Fields.LAST_NAME_ABL);
-        return new UserEntity();
+        String a = vk.users().get(actor).fields(Fields.FIRST_NAME_ABL, Fields.LAST_NAME_ABL).toString();
+        return new UserEntity(0,a,null,null);
     }
 
     //Help methods
