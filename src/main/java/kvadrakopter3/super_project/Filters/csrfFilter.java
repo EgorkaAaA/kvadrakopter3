@@ -20,7 +20,9 @@ public class csrfFilter extends OncePerRequestFilter {
         CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
 
         response.addCookie(new Cookie("XSRF-TOKEN",csrfToken.getToken()));
+
         response.setHeader("XSRF-TOKEN", csrfToken.getToken());
+
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Credentials", String.valueOf(true));
         response.setHeader("Access-Control-Allow-Methods", "*");

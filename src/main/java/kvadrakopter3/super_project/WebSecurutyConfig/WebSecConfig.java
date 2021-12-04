@@ -25,6 +25,8 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .authorizeRequests()
                 .antMatchers("/**/post/**").authenticated()
                 .antMatchers("/**/admin/**").hasRole("ADMIN")
