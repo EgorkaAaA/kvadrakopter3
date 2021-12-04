@@ -20,6 +20,7 @@ public class csrfFilter extends OncePerRequestFilter {
 
         response.setHeader("CSRF-TOKEN-VALUE", csrfToken.getToken());
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Methods", "*");
 
         filterChain.doFilter(request,response);
     }
