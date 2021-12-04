@@ -26,7 +26,6 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/**/post/**").authenticated()
                 .antMatchers("/**/admin/**").hasRole("ADMIN")
                 .and()
                 .addFilterAfter(new csrfFilter(),

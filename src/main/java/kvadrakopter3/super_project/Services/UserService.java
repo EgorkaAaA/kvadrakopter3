@@ -1,11 +1,9 @@
 package kvadrakopter3.super_project.Services;
 
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.vk.api.sdk.client.ClientResponse;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
@@ -14,10 +12,9 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.users.Fields;
-import com.vk.api.sdk.queries.users.UsersGetQuery;
-import jdk.nashorn.internal.parser.JSONParser;
 import kvadrakopter3.super_project.Entityes.RolesEntity;
 import kvadrakopter3.super_project.Entityes.UserEntity;
+import kvadrakopter3.super_project.Enums.UserRoles;
 import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
 import kvadrakopter3.super_project.Exceptions.UserNotFoundException;
 import kvadrakopter3.super_project.Repositories.UserRepo;
@@ -37,7 +34,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 
@@ -47,6 +43,7 @@ public class UserService implements UserDetailsService, UserServiceInterface {
     private final TransportClient transportClient = HttpTransportClient.getInstance();
     private final VkApiClient vk = new VkApiClient(transportClient);
     private final String CLIENT_SECRET = "fA2bwDddC161AtKpXxYb";
+    private final String URI = "git@heroku.com:project.git";
 
     @Autowired
     public UserService(UserRepo userRepo) {
@@ -101,6 +98,14 @@ public class UserService implements UserDetailsService, UserServiceInterface {
         JsonElement first_name = obj.get("first_name");
 
         return new UserEntity(0,first_name.toString(),null,null);
+    }
+
+    @Override
+    public boolean userHaveRoleAdmin(UserEntity user) throws UserNotFoundException {
+        if(findUserByUserName(user.getUserName()) == null) {
+            throw new UserNotFoundException(String.format("User with name: %s not found", user.getUserName()));
+        }
+        return user.getRoles().stream().anyMatch(r -> r.getRoleName().equals(UserRoles.ADMIN_ROLE.name()));
     }
 
     //Help methods
