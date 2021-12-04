@@ -28,7 +28,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/**/post/**").authenticated()
                 .antMatchers("/**/admin/**").hasRole("ADMIN")
-                .anyRequest().permitAll()
+                .antMatchers("localhost:3000/**").permitAll()
                 .and()
                 .addFilterAfter(new csrfFilter(),
                         CsrfFilter.class)
