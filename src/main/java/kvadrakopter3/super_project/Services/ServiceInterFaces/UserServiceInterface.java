@@ -8,6 +8,8 @@ import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
 import kvadrakopter3.super_project.Exceptions.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface UserServiceInterface {
     ResponseEntity<UserEntity> saveUserInDataBase(UserEntity user) throws UserAllReadyExistsException;
 
@@ -15,5 +17,13 @@ public interface UserServiceInterface {
 
     UserEntity createUserFromVkAuth(String code) throws ClientException, ApiException;
 
-    boolean userHaveRoleAdmin(UserEntity user) throws UserNotFoundException;
+    UserEntity updateUserById(long id,UserEntity user) throws UserNotFoundException;
+
+    UserEntity deleteUserById(long id) throws UserNotFoundException;
+
+    UserEntity getUserById(long id) throws UserNotFoundException;
+
+    List<UserEntity> getUsers();
+
+    boolean userHaveRoleAdmin(long user) throws UserNotFoundException;
 }

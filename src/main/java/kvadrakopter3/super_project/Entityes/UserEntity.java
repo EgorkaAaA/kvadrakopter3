@@ -7,13 +7,21 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class
 UserEntity  {
+    public UserEntity(long id, String userName, String password, Collection<RolesEntity> roles) {
+        this.id = id;
+        this.userName = userName;
+        this.password = password;
+        this.roles = roles;
+        this.deleteDate = null;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -24,4 +32,6 @@ UserEntity  {
 
     @OneToMany
     private Collection<RolesEntity> roles;
+
+    private Date deleteDate;
 }

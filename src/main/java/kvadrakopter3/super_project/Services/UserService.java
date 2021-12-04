@@ -34,6 +34,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -101,11 +103,37 @@ public class UserService implements UserDetailsService, UserServiceInterface {
     }
 
     @Override
-    public boolean userHaveRoleAdmin(UserEntity user) throws UserNotFoundException {
-        if(findUserByUserName(user.getUserName()) == null) {
-            throw new UserNotFoundException(String.format("User with name: %s not found", user.getUserName()));
+    public UserEntity updateUserById(long id, UserEntity user) throws UserNotFoundException {
+        UserEntity userFromDb = userExists(id);
+        user.setId(userFromDb.getId());
+        return userRepo.save(user);
+    }
+
+
+    @Override
+    public UserEntity deleteUserById(long id) throws UserNotFoundException {
+        UserEntity userFromDb = userExists(id);
+        userFromDb.setDeleteDate(new Date());
+        return userRepo.save(userFromDb);
+    }
+
+    @Override
+    public UserEntity getUserById(long id) throws UserNotFoundException {
+        return userExists(id);
+    }
+
+    @Override
+    public List<UserEntity> getUsers() {
+        return userRepo.findAll();
+    }
+
+    @Override
+    public boolean userHaveRoleAdmin(long id) throws UserNotFoundException {
+        UserEntity userFromDb = userRepo.findById(id);
+        if(userFromDb == null) {
+            throw new UserNotFoundException(id);
         }
-        return user.getRoles().stream().anyMatch(r -> r.getRoleName().equals(UserRoles.ADMIN_ROLE.name()));
+        return userFromDb.getRoles().stream().anyMatch(r -> r.getRoleName().equals(UserRoles.ADMIN_ROLE.name()));
     }
 
     //Help methods
@@ -115,5 +143,13 @@ public class UserService implements UserDetailsService, UserServiceInterface {
 
     private Collection<? extends GrantedAuthority> mapRolesToGrantedAuthority(Collection<RolesEntity> roles) {
         return roles.stream().map(r -> new SimpleGrantedAuthority(r.getRoleName())).collect(Collectors.toList());
+    }
+
+    private UserEntity userExists(long id) throws UserNotFoundException {
+        UserEntity userFromDb = userRepo.findById(id);
+        if(userFromDb == null) {
+            throw new UserNotFoundException(id);
+        }
+        return userFromDb;
     }
 }
