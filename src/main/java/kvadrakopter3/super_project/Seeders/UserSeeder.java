@@ -8,11 +8,11 @@ import java.util.stream.IntStream;
 
 @Component
 public class UserSeeder {
-    private final UserService userService;
-
-    @Autowired
-    public UserSeeder(UserService userService) {
-        IntStream.range(1,100).
-        userService.saveUserInDataBase()
-    }
+//    private final UserService userService;
+//
+//    @Autowired
+//    public UserSeeder(UserService userService) {
+//        IntStream.range(1,100).
+//        userService.saveUserInDataBase()
+//    }
 }
