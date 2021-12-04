@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfFilter;
@@ -25,17 +26,20 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors()
+                    .cors()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/**/post/**").authenticated()
-                .antMatchers("/**/admin/**").hasRole("ADMIN")
-                .antMatchers("http://localhost:3000/").permitAll()
+                    .authorizeRequests()
+                    .antMatchers("/**/post/**").authenticated()
+                    .antMatchers("/**/admin/**").hasRole("ADMIN")
+                    .antMatchers("http://localhost:3000/").permitAll()
                 .and()
-                .addFilterAfter(new csrfFilter(),
-                        CsrfFilter.class)
-                .authenticationProvider(authenticationProvider())
-                .httpBasic();
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .and()
+                    .addFilterAfter(new csrfFilter(),
+                            CsrfFilter.class)
+                    .authenticationProvider(authenticationProvider())
+                    .httpBasic();
     }
 
     @Bean
