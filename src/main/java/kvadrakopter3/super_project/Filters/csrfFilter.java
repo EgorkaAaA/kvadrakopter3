@@ -19,6 +19,7 @@ public class csrfFilter extends OncePerRequestFilter {
         CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
 
         response.setHeader("CSRF-TOKEN-VALUE", csrfToken.getToken());
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
         filterChain.doFilter(request,response);
     }
