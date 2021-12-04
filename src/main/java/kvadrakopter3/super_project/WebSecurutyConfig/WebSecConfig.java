@@ -30,7 +30,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/admin/**").hasRole("ADMIN")
                 .antMatchers("http://localhost:3000/").permitAll()
                 .and()
-                .addFilterAfter(new csrfFilter(),
+                .addFilterBefore(new csrfFilter(),
                         CsrfFilter.class)
                 .authenticationProvider(authenticationProvider())
                 .httpBasic();
