@@ -64,14 +64,13 @@ public class UserService implements UserDetailsService, UserServiceInterface {
 
 
     @Override
-    public ResponseEntity<UserEntity> saveUserInDataBase(UserEntity user) throws UserAllReadyExistsException {
+    public UserEntity saveUserInDataBase(UserEntity user) throws UserAllReadyExistsException {
         UserEntity userFromDb = userRepo.findByUserName(user.getUserName());
         if(userFromDb != null) {
             throw new UserAllReadyExistsException(String.format("User with name %s all ready exists", user.getUserName()));
         }
         user.setPassword(passwordEncoder().encode(user.getPassword()));
-        userRepo.save(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        return userRepo.save(user);
     }
 
     @Override

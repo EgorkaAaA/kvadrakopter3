@@ -13,11 +13,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-public class UserController implements UserControllerInterface {
+public class UserControllerImpl implements UserControllerInterface {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserControllerImpl(UserService userService) {
         this.userService = userService;
     }
 

@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class RegistrationControllerImpl implements RegistrationControllerInterface {
     private final UserService userService;
-    private final Logger logger = LoggerFactory.getLogger(SuperProjectApplication.class);
 
     @Autowired
     public RegistrationControllerImpl(UserService userService) {
@@ -28,29 +27,7 @@ public class RegistrationControllerImpl implements RegistrationControllerInterfa
 
     @PostMapping("/registration")
     @Override
-    public ResponseEntity<UserEntity> registrationEndPoint(@ModelAttribute UserEntity user) {
-        try {
-            userService.saveUserInDataBase(user);
-            logger.info("User created");
-        } catch (UserAllReadyExistsException e) {
-            logger.error(e.getMessage());
-        }
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
-    @Override
-    @GetMapping("/registration/vk-auth")
-    public ResponseEntity<UserEntity> vkAuthEndPoint(String code) {
-        UserEntity userFromVkAuth = null;
-        try {
-            userFromVkAuth = userService.createUserFromVkAuth(code);
-            logger.info("User from vk created");
-        } catch (ClientException | ApiException e) {
-            logger.error(e.getMessage());
-        }
-        if(userFromVkAuth != null)
-            return new ResponseEntity<>(userFromVkAuth, HttpStatus.OK);
-        else
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<UserEntity> registrationEndPoint(@ModelAttribute UserEntity user) throws UserAllReadyExistsException {
+        return new ResponseEntity<>(userService.saveUserInDataBase(user), HttpStatus.OK);
     }
 }

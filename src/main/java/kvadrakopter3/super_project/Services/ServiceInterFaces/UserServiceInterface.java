@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface UserServiceInterface {
-    ResponseEntity<UserEntity> saveUserInDataBase(UserEntity user) throws UserAllReadyExistsException;
+    UserEntity saveUserInDataBase(UserEntity user) throws UserAllReadyExistsException;
 
     UserEntity findUserByUserName(String userName) throws UserNotFoundException;
 
