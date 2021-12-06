@@ -3,34 +3,34 @@ package kvadrakopter3.super_project.ExceptionHandler;
 import java.util.Date;
 
 public class ExceptionResponseBody {
-    private final String exceptionName;
+    private final String name;
 
-    private final String exceptionMessage;
+    private final String message;
 
-    private final Date exceptionDate;
+    private final Date date;
 
-    private final String exceptionTape;
+    private final String type;
 
-    public ExceptionResponseBody(Exception e,String exceptionTape) {
-        this.exceptionName = e.getClass().getName();
-        this.exceptionMessage = e.getMessage();
-        this.exceptionDate = new Date();
-        this.exceptionTape = exceptionTape;
+    public ExceptionResponseBody(Exception e,String exceptionType) {
+        this.name = e.getClass().getName().split("kvadrakopter3.super_project.Exceptions.")[1];
+        this.message = e.getMessage();
+        this.date = new Date();
+        this.type = exceptionType;
     }
 
-    public String getExceptionName() {
-        return exceptionName;
+    public String getName() {
+        return name;
     }
 
-    public String getExceptionMessage() {
-        return exceptionMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public Date getExceptionDate() {
-        return exceptionDate;
+    public Date getDate() {
+        return date;
     }
 
-    public String getExceptionTape() {
-        return exceptionTape;
+    public String getType() {
+        return type;
     }
 }
