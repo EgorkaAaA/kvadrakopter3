@@ -29,7 +29,7 @@ public class SameSiteFilter implements javax.servlet.Filter {
                 firstHeader = false;
                 continue;
             }
-            response.addHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=none"));
+            response.setHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s; %s", header, "SameSite=none", "secure"));
         }
     }
 
