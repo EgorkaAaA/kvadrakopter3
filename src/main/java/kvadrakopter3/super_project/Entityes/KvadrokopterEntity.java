@@ -16,7 +16,11 @@ public class KvadrokopterEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String name;
+    
     private String photoUrl;
 
     private String videoUrl;
+
+    private String description;
 }
