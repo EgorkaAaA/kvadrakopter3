@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 @EnableWebSecurity
 public class WebSecConfig extends WebSecurityConfigurerAdapter {
@@ -40,7 +41,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .csrf().disable()
                     .addFilterAfter(new csrfFilter(),
-                            CsrfFilter.class)
+                            OncePerRequestFilter.class)
 //                    .addFilterBefore(new SameSiteFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authenticationProvider(authenticationProvider())
                     .httpBasic();
