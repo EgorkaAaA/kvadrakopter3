@@ -1,6 +1,7 @@
 package kvadrakopter3.super_project.WebSecurutyConfig;
 
 
+import kvadrakopter3.super_project.Filters.SameSiteFilter;
 import kvadrakopter3.super_project.Filters.csrfFilter;
 import kvadrakopter3.super_project.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
 
 @EnableWebSecurity
@@ -38,6 +40,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .addFilterAfter(new csrfFilter(),
                             CsrfFilter.class)
+                    .addFilterBefore(new SameSiteFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authenticationProvider(authenticationProvider())
                     .httpBasic();
     }
