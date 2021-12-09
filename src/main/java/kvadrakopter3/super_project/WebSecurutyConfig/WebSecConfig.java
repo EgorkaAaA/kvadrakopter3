@@ -39,8 +39,8 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
                     .csrf().disable()
-//                    .addFilterAfter(new csrfFilter(),
-//                            CsrfFilter.class)
+                    .addFilterAfter(new csrfFilter(),
+                            CsrfFilter.class)
 //                    .addFilterBefore(new SameSiteFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authenticationProvider(authenticationProvider())
                     .httpBasic();
