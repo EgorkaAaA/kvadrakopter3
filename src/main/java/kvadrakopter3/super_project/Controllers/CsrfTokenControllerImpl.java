@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class CsrfTokenControllerImpl implements CsrfTokenControllerInterface {
     @GetMapping("/csrf")
     public ResponseEntity getCsrfToken(){
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }
 }
