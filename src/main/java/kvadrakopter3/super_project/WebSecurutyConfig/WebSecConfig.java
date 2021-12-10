@@ -47,11 +47,14 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
                     .csrf().disable()
-                    .addFilterAfter(new csrfFilter(),
-                            BasicAuthenticationFilter.class)
+//                    .addFilterAfter(new csrfFilter(),
+//                            BasicAuthenticationFilter.class)
 //                    .addFilterBefore(new SameSiteFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authenticationProvider(authenticationProvider())
-                    .httpBasic();
+                    .formLogin()
+                    .loginProcessingUrl("/api/auth/login")
+//                .and()
+//                    .httpBasic();
     }
 
     @Bean
