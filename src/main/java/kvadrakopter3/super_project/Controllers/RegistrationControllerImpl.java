@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "Http://localHost:3000")
 @RequestMapping("/api/auth")
 public class RegistrationControllerImpl implements RegistrationControllerInterface {
     private final UserService userService;
