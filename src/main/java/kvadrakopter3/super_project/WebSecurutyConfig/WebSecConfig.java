@@ -5,8 +5,10 @@ import kvadrakopter3.super_project.Filters.SameSiteFilter;
 import kvadrakopter3.super_project.Filters.csrfFilter;
 import kvadrakopter3.super_project.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -25,7 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @EnableWebSecurity
-public class WebSecConfig extends WebSecurityConfigurerAdapter {
+public class WebSecConfig extends WebSecurityConfigurerAdapter implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
     private final UserService userService;
 
     @Autowired
@@ -52,9 +54,10 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
 //                    .addFilterBefore(new SameSiteFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authenticationProvider(authenticationProvider())
                     .formLogin()
-                    .loginProcessingUrl("/api/auth/login");
-//                .and()
-//                    .httpBasic();
+                    .loginProcessingUrl("/api/auth/login")
+                .and()
+                    .httpBasic()
+                    .disable();
     }
 
     @Bean
@@ -79,5 +82,10 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("https://localhost:3000", new CorsConfiguration().applyPermitDefaultValues());
         return source;
+    }
+
+    @Override
+    public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
+        event.
     }
 }

@@ -26,4 +26,6 @@ public interface UserServiceInterface {
     List<UserEntity> getUsers();
 
     boolean userHaveRoleAdmin(long user) throws UserNotFoundException;
+
+    UserEntity loginUser(UserEntity user) throws UserNotFoundException;
 }

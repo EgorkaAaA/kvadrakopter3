@@ -12,8 +12,8 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
-public class
-UserEntity  {
+@Table(name = "UserEntity")
+public class UserEntity  {
     public UserEntity(long id, String userName, String password, Collection<RolesEntity> roles) {
         this.id = id;
         this.userName = userName;

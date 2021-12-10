@@ -135,6 +135,17 @@ public class UserService implements UserDetailsService, UserServiceInterface {
         return userFromDb.getRoles().stream().anyMatch(r -> r.getRoleName().equals(UserRoles.ADMIN_ROLE.name()));
     }
 
+    @Override
+    public UserEntity loginUser(UserEntity user) throws UserNotFoundException {
+        UserEntity userFromDb = userRepo.findByUserName(user.getUserName());
+        if(userFromDb == null) {
+            throw new UserNotFoundException(user.getUserName());
+        }
+        System.out.println(String.valueOf(userFromDb.getPassword()));
+        System.out.println(String.valueOf(passwordEncoder().encode(user.getPassword())));
+        return userFromDb.getPassword().equals(user.getPassword()) ? userFromDb : new UserEntity();
+    }
+
     //Help methods
     private PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

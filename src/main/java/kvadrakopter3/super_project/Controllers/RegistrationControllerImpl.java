@@ -6,6 +6,7 @@ import com.vk.api.sdk.exceptions.ClientException;
 import kvadrakopter3.super_project.Controllers.ControllerInterfaces.RegistrationControllerInterface;
 import kvadrakopter3.super_project.Entityes.UserEntity;
 import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
+import kvadrakopter3.super_project.Exceptions.UserNotFoundException;
 import kvadrakopter3.super_project.Services.UserService;
 import kvadrakopter3.super_project.SuperProjectApplication;
 import org.slf4j.Logger;
@@ -29,5 +30,10 @@ public class RegistrationControllerImpl implements RegistrationControllerInterfa
     @Override
     public ResponseEntity<UserEntity> registrationEndPoint(@ModelAttribute UserEntity user) throws UserAllReadyExistsException {
         return new ResponseEntity<>(userService.saveUserInDataBase(user), HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserEntity> loginUser(@ModelAttribute UserEntity user) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.loginUser(user), HttpStatus.OK);
     }
 }
