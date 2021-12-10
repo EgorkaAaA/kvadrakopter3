@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @EnableWebSecurity
-public class WebSecConfig extends WebSecurityConfigurerAdapter implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
+public class WebSecConfig extends WebSecurityConfigurerAdapter  {
     private final UserService userService;
 
     @Autowired
