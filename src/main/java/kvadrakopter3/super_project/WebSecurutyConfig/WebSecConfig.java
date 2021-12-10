@@ -52,7 +52,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
 //                    .addFilterBefore(new SameSiteFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authenticationProvider(authenticationProvider())
                     .formLogin()
-                    .loginProcessingUrl("/api/auth/login")
+                    .loginProcessingUrl("/api/auth/login");
 //                .and()
 //                    .httpBasic();
     }
