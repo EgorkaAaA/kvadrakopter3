@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin()
+@CrossOrigin
 @RequestMapping("/api/auth")
 public class RegistrationControllerImpl implements RegistrationControllerInterface {
     private final UserService userService;
