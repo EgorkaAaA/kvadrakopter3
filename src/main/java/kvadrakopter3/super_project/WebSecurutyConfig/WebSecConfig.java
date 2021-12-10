@@ -84,8 +84,8 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter implements Applic
         return source;
     }
 
-    @Override
-    public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
-        event.
-    }
+//    @Override
+//    public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
+//        event.
+//    }
 }
