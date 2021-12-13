@@ -15,13 +15,12 @@ import com.vk.api.sdk.objects.users.Fields;
 import kvadrakopter3.super_project.Entityes.RolesEntity;
 import kvadrakopter3.super_project.Entityes.UserEntity;
 import kvadrakopter3.super_project.Enums.UserRoles;
+import kvadrakopter3.super_project.ExceptionHandler.UserPasswordHaveNoMatches;
 import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
 import kvadrakopter3.super_project.Exceptions.UserNotFoundException;
 import kvadrakopter3.super_project.Repositories.UserRepo;
 import kvadrakopter3.super_project.Services.ServiceInterFaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -34,6 +33,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,6 +70,7 @@ public class UserService implements UserDetailsService, UserServiceInterface {
             throw new UserAllReadyExistsException(String.format("User with name %s all ready exists", user.getUserName()));
         }
         user.setPassword(passwordEncoder().encode(user.getPassword()));
+        user.setRoles(Collections.singletonList(new RolesEntity(UserRoles.ROLE_USER.name())));
         return userRepo.save(user);
     }
 
@@ -132,18 +133,21 @@ public class UserService implements UserDetailsService, UserServiceInterface {
         if(userFromDb == null) {
             throw new UserNotFoundException(id);
         }
-        return userFromDb.getRoles().stream().anyMatch(r -> r.getRoleName().equals(UserRoles.ADMIN_ROLE.name()));
+        return userFromDb.getRoles().stream().anyMatch(r -> r.getRoleName().equals(UserRoles.ROLE_ADMIN.name()));
     }
 
     @Override
-    public UserEntity loginUser(UserEntity user) throws UserNotFoundException {
+    public UserEntity loginUser(UserEntity user) throws UserNotFoundException, UserPasswordHaveNoMatches {
         UserEntity userFromDb = userRepo.findByUserName(user.getUserName());
         if(userFromDb == null) {
             throw new UserNotFoundException(user.getUserName());
         }
-        System.out.println(String.valueOf(userFromDb.getPassword()));
-        System.out.println(String.valueOf(passwordEncoder().encode(user.getPassword())));
-        return userFromDb.getPassword().equals(user.getPassword()) ? userFromDb : new UserEntity();
+
+        if(!passwordEncoder().matches(user.getPassword(), userFromDb.getPassword())) {
+            throw new UserPasswordHaveNoMatches();
+        }
+
+        return userFromDb;
     }
 
     //Help methods

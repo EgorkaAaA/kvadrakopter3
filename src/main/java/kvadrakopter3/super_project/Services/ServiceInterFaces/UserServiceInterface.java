@@ -4,6 +4,7 @@ package kvadrakopter3.super_project.Services.ServiceInterFaces;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import kvadrakopter3.super_project.Entityes.UserEntity;
+import kvadrakopter3.super_project.ExceptionHandler.UserPasswordHaveNoMatches;
 import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
 import kvadrakopter3.super_project.Exceptions.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +28,5 @@ public interface UserServiceInterface {
 
     boolean userHaveRoleAdmin(long user) throws UserNotFoundException;
 
-    UserEntity loginUser(UserEntity user) throws UserNotFoundException;
+    UserEntity loginUser(UserEntity user) throws UserNotFoundException, UserPasswordHaveNoMatches;
 }

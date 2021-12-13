@@ -1,14 +1,14 @@
 package kvadrakopter3.super_project.WebSecurutyConfig;
 
 
-import kvadrakopter3.super_project.Filters.SameSiteFilter;
+import kvadrakopter3.super_project.Filters.JwtFilter;
+import kvadrakopter3.super_project.Filters.UserNamePasswordAuthFilter;
 import kvadrakopter3.super_project.Filters.csrfFilter;
+import kvadrakopter3.super_project.Repositories.UserRepo;
 import kvadrakopter3.super_project.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,30 +17,51 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 @EnableWebSecurity
 public class WebSecConfig extends WebSecurityConfigurerAdapter  {
     private final UserService userService;
+    private final UserRepo userRepo;
+    private final JsonParse jsonParse;
+    private final JwtFilter jwtFilter;
 
     @Autowired
-    public WebSecConfig(UserService userService) {
+    public WebSecConfig(UserService userService, UserRepo userRepo, JsonParse jsonParse, JwtFilter jwtFilter) {
         this.userService = userService;
+        this.userRepo = userRepo;
+        this.jsonParse = jsonParse;
+        this.jwtFilter = jwtFilter;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                    .cors()
-                .and()
-                    .authorizeRequests()
+        http.cors();
+
+        http.csrf().disable();
+
+        http.httpBasic().disable();
+
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+//        http.formLogin()
+//                .loginProcessingUrl("/api/auth/login")
+//                .usernameParameter("userName")
+//                .successHandler(new AuthenticationSuccessHandler() {
+//                    @Override
+//                    public void onAuthenticationSuccess(HttpServletRequest request,
+//                                                        HttpServletResponse response,
+//                                                        Authentication authentication)
+//                            throws IOException, ServletException {
+//                        //do nothing
+//                    }
+//                });
+
+        http.addFilterBefore(new UserNamePasswordAuthFilter(authenticationManager(),userRepo),
+                UsernamePasswordAuthenticationFilter.class);
+
+        http.authorizeRequests()
                     .antMatchers("/**/post/**").authenticated()
                     .antMatchers("/**/admins/**").hasRole("ADMIN")
                     .anyRequest().permitAll()
@@ -48,16 +69,12 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter  {
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
-                    .csrf().disable()
-//                    .addFilterAfter(new csrfFilter(),
-//                            BasicAuthenticationFilter.class)
+                    .addFilterAfter(new csrfFilter(),
+                            BasicAuthenticationFilter.class)
 //                    .addFilterBefore(new SameSiteFilter(), UsernamePasswordAuthenticationFilter.class)
-                    .authenticationProvider(authenticationProvider())
-                    .formLogin()
-                    .loginProcessingUrl("/api/auth/login")
-                .and()
-                    .httpBasic()
-                    .disable();
+                    .authenticationProvider(authenticationProvider());
+
+        http.headers().frameOptions().disable();
     }
 
     @Bean
@@ -73,19 +90,4 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter  {
         return provider;
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("https://localhost:3000", new CorsConfiguration().applyPermitDefaultValues());
-        return source;
-    }
-
-//    @Override
-//    public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
-//        event.
-//    }
 }

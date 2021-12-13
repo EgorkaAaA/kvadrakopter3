@@ -1,16 +1,18 @@
 package kvadrakopter3.super_project.Entityes;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import kvadrakopter3.super_project.Enums.UserRoles;
+import lombok.*;
 
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "UserEntity")
 public class UserEntity  {
@@ -34,4 +36,9 @@ public class UserEntity  {
     private Collection<RolesEntity> roles;
 
     private Date deleteDate;
+
+    public UserEntity(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
 }

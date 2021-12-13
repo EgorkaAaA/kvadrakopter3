@@ -12,7 +12,7 @@ public class ExceptionResponseBody {
     private final String type;
 
     public ExceptionResponseBody(Exception e,String exceptionType) {
-        this.name = e.getClass().getName().split("kvadrakopter3.super_project.Exceptions.")[1];
+        this.name = e.getClass().getName();
         this.message = e.getMessage();
         this.date = new Date();
         this.type = exceptionType;
