@@ -15,6 +15,7 @@ import kvadrakopter3.super_project.Exceptions.UserNotFoundException;
 import kvadrakopter3.super_project.Repositories.RoleRepo;
 import kvadrakopter3.super_project.Repositories.UserRepo;
 import kvadrakopter3.super_project.Services.ServiceInterFaces.UserServiceInterface;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,14 +28,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
 @Service
+@Log
 public class UserService implements UserDetailsService, UserServiceInterface {
     private final UserRepo userRepo;
     private final TransportClient transportClient = HttpTransportClient.getInstance();
@@ -63,12 +62,18 @@ public class UserService implements UserDetailsService, UserServiceInterface {
     @Override
     public UserEntity saveUserInDataBase(UserEntity user) throws UserAllReadyExistsException {
         UserEntity userFromDb = userRepo.findByUserName(user.getUserName());
+        log.info("тут");
         if(userFromDb != null) {
             throw new UserAllReadyExistsException(String.format("User with name %s all ready exists", user.getUserName()));
         }
         user.setPassword(passwordEncoder().encode(user.getPassword()));
-        user.setRoles(Collections.singletonList(roleRepo.findByRoleName(UserRoles.ROLE_USER.name())));
-        return userRepo.save(user);
+        user.setRoles(Arrays.asList(roleRepo.findByRoleName(UserRoles.ROLE_USER.name())));
+        log.info("тут2");
+        log.info(String.valueOf(user.getId()));
+        user.setId(100);
+        UserEntity userEntity = userRepo.save(user);
+        log.info(userEntity.getUserName());
+        return userEntity;
     }
 
     @Override

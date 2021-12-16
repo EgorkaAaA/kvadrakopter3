@@ -13,8 +13,13 @@ public class RoleSeeder {
 
     @Autowired
     public RoleSeeder(RoleRepo roleRepo) {
-        roleRepo.saveAll(Arrays.asList(new RolesEntity(UserRoles.ROLE_USER.name()),
-                new RolesEntity(UserRoles.ROLE_ADMIN.name())));
+        try {
+            roleRepo.saveAll(Arrays.asList(new RolesEntity(1,UserRoles.ROLE_USER.name()),
+                    new RolesEntity(2,UserRoles.ROLE_ADMIN.name())));
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         roleRepo.findAll().forEach(System.out::println);
     }

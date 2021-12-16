@@ -18,7 +18,7 @@ public class ExceptionHandlerForAllExceptions {
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ExceptionResponseBody> userNotFoundExceptionHandler(Exception ex) {
         log.error(ex.getMessage());
-        Arrays.asList(ex.getStackTrace()).forEach(e -> log.info(String.valueOf(e)));
+//        Arrays.asList(ex.getStackTrace()).forEach(e -> log.info(String.valueOf(e)));
         return new ResponseEntity<>(new ExceptionResponseBody(ex,"error"), HttpStatus.NOT_FOUND);
     }
 }
