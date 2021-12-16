@@ -67,7 +67,7 @@ public class UserService implements UserDetailsService, UserServiceInterface {
             throw new UserAllReadyExistsException(String.format("User with name %s all ready exists", user.getUserName()));
         }
         user.setPassword(passwordEncoder().encode(user.getPassword()));
-        user.setRoles(Collections.singletonList(roleRepo.getById(UserRoles.ROLE_USER.name())));
+        user.setRoles(Collections.singletonList(roleRepo.findByRoleName(UserRoles.ROLE_USER.name())));
         return userRepo.save(user);
     }
 

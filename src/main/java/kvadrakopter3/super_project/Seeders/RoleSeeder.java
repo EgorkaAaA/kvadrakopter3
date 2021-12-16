@@ -10,13 +10,12 @@ import java.util.Arrays;
 
 @Component
 public class RoleSeeder {
-    private final RoleRepo roleRepo;
 
     @Autowired
     public RoleSeeder(RoleRepo roleRepo) {
-        this.roleRepo = roleRepo;
-
         roleRepo.saveAll(Arrays.asList(new RolesEntity(UserRoles.ROLE_USER.name()),
                 new RolesEntity(UserRoles.ROLE_ADMIN.name())));
+
+        roleRepo.findAll().forEach(System.out::println);
     }
 }

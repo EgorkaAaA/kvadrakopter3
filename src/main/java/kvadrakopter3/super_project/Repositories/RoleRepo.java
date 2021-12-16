@@ -4,4 +4,5 @@ import kvadrakopter3.super_project.Entityes.RolesEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoleRepo extends JpaRepository<RolesEntity, String> {
+    RolesEntity findByRoleName(String roleName);
 }

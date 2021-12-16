@@ -12,13 +12,13 @@ import java.util.Collections;
 
 @Component
 public class UserSeeder {
-    @SneakyThrows
-    @Autowired
-    public UserSeeder(UserService userService) {
-        userService.saveUserInDataBase(
-                new UserEntity("testAdmin","123"));
-
-        userService.saveUserInDataBase(
-                new UserEntity("test","123"));
-    }
+//    @SneakyThrows
+//    @Autowired
+//    public UserSeeder(UserService userService) {
+//        userService.saveUserInDataBase(
+//                new UserEntity("testAdmin","123"));
+//
+//        userService.saveUserInDataBase(
+//                new UserEntity("test","123"));
+//    }
 }
