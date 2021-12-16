@@ -1,23 +1,18 @@
 package kvadrakopter3.super_project.Services;
 
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
-import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
-import com.vk.api.sdk.objects.UserAuthResponse;
-import com.vk.api.sdk.objects.users.Fields;
 import kvadrakopter3.super_project.Entityes.RolesEntity;
 import kvadrakopter3.super_project.Entityes.UserEntity;
 import kvadrakopter3.super_project.Enums.UserRoles;
 import kvadrakopter3.super_project.ExceptionHandler.UserPasswordHaveNoMatches;
 import kvadrakopter3.super_project.Exceptions.UserAllReadyExistsException;
 import kvadrakopter3.super_project.Exceptions.UserNotFoundException;
+import kvadrakopter3.super_project.Repositories.RoleRepo;
 import kvadrakopter3.super_project.Repositories.UserRepo;
 import kvadrakopter3.super_project.Services.ServiceInterFaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +41,12 @@ public class UserService implements UserDetailsService, UserServiceInterface {
     private final VkApiClient vk = new VkApiClient(transportClient);
     private final String CLIENT_SECRET = "fA2bwDddC161AtKpXxYb";
     private final String URI = "git@heroku.com:project.git";
+    private final RoleRepo roleRepo;
 
     @Autowired
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, RoleRepo roleRepo) {
         this.userRepo = userRepo;
+        this.roleRepo = roleRepo;
     }
 
     @Override
@@ -70,7 +67,7 @@ public class UserService implements UserDetailsService, UserServiceInterface {
             throw new UserAllReadyExistsException(String.format("User with name %s all ready exists", user.getUserName()));
         }
         user.setPassword(passwordEncoder().encode(user.getPassword()));
-        user.setRoles(Collections.singletonList(new RolesEntity(UserRoles.ROLE_USER.name())));
+        user.setRoles(Collections.singletonList(roleRepo.getById(UserRoles.ROLE_USER.name())));
         return userRepo.save(user);
     }
 
@@ -85,21 +82,21 @@ public class UserService implements UserDetailsService, UserServiceInterface {
 
     @Override
     public UserEntity createUserFromVkAuth(String code) throws ClientException, ApiException {
-        UserAuthResponse authResponse = vk.oAuth()
-                .userAuthorizationCodeFlow(7957025,
-                        CLIENT_SECRET,
-                        "https://kvadrakopter3.herokuapp.com/api/auth/registration/vk-auth" ,
-                        code)
-                .execute();
+//        UserAuthResponse authResponse = vk.oAuth()
+//                .userAuthorizationCodeFlow(7957025,
+//                        CLIENT_SECRET,
+//                        "https://kvadrakopter3.herokuapp.com/api/auth/registration/vk-auth" ,
+//                        code)
+//                .execute();
+//
+//        UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
+//
+//        String a =  vk.users().get(actor).fields(Fields.FIRST_NAME_ABL, Fields.LAST_NAME_ABL).executeAsString();
+//        JsonParser parser = new JsonParser();
+//        JsonObject obj = (JsonObject) parser.parse(a);
+//        JsonElement first_name = obj.get("first_name");
 
-        UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
-
-        String a =  vk.users().get(actor).fields(Fields.FIRST_NAME_ABL, Fields.LAST_NAME_ABL).executeAsString();
-        JsonParser parser = new JsonParser();
-        JsonObject obj = (JsonObject) parser.parse(a);
-        JsonElement first_name = obj.get("first_name");
-
-        return new UserEntity(0,first_name.toString(),null,null);
+        return null;//new UserEntity(first_name.toString(),null,null);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package kvadrakopter3.super_project.Filters;
 
-import kvadrakopter3.super_project.Entityes.UserEntity;
 import kvadrakopter3.super_project.Services.UserService;
 import kvadrakopter3.super_project.WebSecurutyConfig.JwtProvider;
 import lombok.extern.java.Log;
@@ -30,7 +29,7 @@ public class JwtFilter extends GenericFilterBean {
     private JwtProvider jwtProvider;
 
     @Autowired
-    private UserService customUserDetailsService;
+    private UserService userService;
 
     @Override
     public void doFilter(ServletRequest servletRequest,
@@ -41,7 +40,7 @@ public class JwtFilter extends GenericFilterBean {
         String token = getTokenFromRequest((HttpServletRequest) servletRequest);
         if (token != null && jwtProvider.validateToken(token)) {
             String userLogin = jwtProvider.getLoginFromToken(token);
-            UserDetails customUserDetails = customUserDetailsService.loadUserByUsername(userLogin);
+            UserDetails customUserDetails = userService.loadUserByUsername(userLogin);
             UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);

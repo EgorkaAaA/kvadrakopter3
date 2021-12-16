@@ -39,10 +39,13 @@ public class RegistrationControllerImpl implements RegistrationControllerInterfa
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> loginUserByLoginAndPassword(@RequestBody UserEntity user)
+    public ResponseEntity<AuthResponse> loginUserByLoginAndPassword(
+            @RequestBody UserEntity user)
             throws UserNotFoundException, UserPasswordHaveNoMatches {
         UserEntity userFromDb = userService.loginUser(user);
         log.info("Login is ok");
-        return new ResponseEntity<>(new AuthResponse(userFromDb,jwtProvider.generateToken(userFromDb.getUserName())),HttpStatus.OK);
+        return new ResponseEntity<>(
+                new AuthResponse(userFromDb,
+                        jwtProvider.generateToken(userFromDb.getUserName())),HttpStatus.OK);
     }
 }
