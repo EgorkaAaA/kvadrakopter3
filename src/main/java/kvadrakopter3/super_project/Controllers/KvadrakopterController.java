@@ -29,8 +29,8 @@ public class KvadrakopterController {
         return new ResponseEntity<>(kvadrakopterService.getKvadrakopterById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/admin")
-    public ResponseEntity<KvadrokopterEntity> saveKvadrakopter(@RequestBody KvadrokopterEntity kvadrat) {
+    @PostMapping
+    public ResponseEntity<KvadrokopterEntity> saveKvadrakopter(@ModelAttribute KvadrokopterEntity kvadrat) {
         return new ResponseEntity<>(kvadrakopterService.saveKvadrakopter(kvadrat),HttpStatus.OK);
     }
 }

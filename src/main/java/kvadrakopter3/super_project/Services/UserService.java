@@ -61,12 +61,19 @@ public class UserService implements UserDetailsService, UserServiceInterface {
 
     @Override
     public UserEntity saveUserInDataBase(UserEntity user) throws UserAllReadyExistsException {
-        if(userRepo.findByUserName(user.getUserName()) != null) {
+        UserEntity userFromDb = userRepo.findByUserName(user.getUserName());
+        log.info("тут");
+        if(userFromDb != null) {
             throw new UserAllReadyExistsException(String.format("User with name %s all ready exists", user.getUserName()));
         }
         user.setPassword(passwordEncoder().encode(user.getPassword()));
-        user.setRoles(Collections.singletonList(roleRepo.findByRoleName(UserRoles.ROLE_USER.name())));
-        return userRepo.save(user);
+        user.setRoles(Arrays.asList(roleRepo.findByRoleName(UserRoles.ROLE_USER.name())));
+        log.info("тут2");
+        log.info(String.valueOf(user.getId()));
+        user.setId(100);
+        UserEntity userEntity = userRepo.save(user);
+        log.info(userEntity.getUserName());
+        return userEntity;
     }
 
     @Override
