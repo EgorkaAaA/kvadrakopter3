@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
-@Log
 public class RegistrationControllerImpl implements RegistrationControllerInterface {
     private final UserService userService;
     private final JwtProvider jwtProvider;
@@ -33,17 +32,16 @@ public class RegistrationControllerImpl implements RegistrationControllerInterfa
 
     @PostMapping("/registration")
     @Override
-    public ResponseEntity<UserEntity> registrationEndPoint(@RequestBody UserEntity user) throws UserAllReadyExistsException {
-        log.info("Registration is ok");
+    public ResponseEntity<UserEntity> registration(@RequestBody UserEntity user) throws UserAllReadyExistsException {
         return new ResponseEntity<>(userService.saveUserInDataBase(user), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
+    @Override
     public ResponseEntity<AuthResponse> loginUserByLoginAndPassword(
             @RequestBody UserEntity user)
             throws UserNotFoundException, UserPasswordHaveNoMatches {
         UserEntity userFromDb = userService.loginUser(user);
-        log.info("Login is ok");
         return new ResponseEntity<>(
                 new AuthResponse(userFromDb,
                         jwtProvider.generateToken(userFromDb.getUserName())),HttpStatus.OK);
